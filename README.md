@@ -2,7 +2,7 @@
 
 ## О работе
 
-Обучение моделей для решения задачи классификации по предсказанию вероятности завершения обучения студентом на основе датасета (souradippal/student-performance-prediction)[https://www.kaggle.com/datasets/souradippal/student-performance-prediction]. В работе использованы следующие инструменты: Jupyter Notebook, фрэймворк (gradio.app)[https://www.gradio.app/], (Docker)[docker.com], python. Работа предполает работу data science специалиста, разработчика приложения, а также ci/cd pipeline процесс сборки окружения для деплоя на прод.
+Обучение моделей для решения задачи классификации по предсказанию вероятности завершения обучения студентом на основе датасета [souradippal/student-performance-prediction](https://www.kaggle.com/datasets/souradippal/student-performance-prediction). В работе использованы следующие инструменты: Jupyter Notebook, фрэймворк [gradio.app](https://www.gradio.app/), [Docker](docker.com), python. Работа предполает работу data science специалиста, разработчика приложения, а также ci/cd pipeline процесс сборки окружения для деплоя на прод.
 
 ## Локальное использование - development
 
