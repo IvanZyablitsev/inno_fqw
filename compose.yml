@@ -1,0 +1,23 @@
+services:
+
+  notebook:
+    build:
+      context: .
+      dockerfile: ./jupyter/Dockerfile
+    environment:
+      DOCKER_STACKS_JUPYTER_CMD: notebook
+    volumes:
+      - ./scraping:/home/jovyan/scriping
+    ports:
+      - 8888:8888
+    command: "start-notebook.sh --ServerApp.root_dir=/home/jovyan/scriping --NotebookApp.token="
+
+  gui:
+    build: .
+    ports:
+      - 7860:7860
+    volumes:
+      - ./app:/usr/src/app:rw
+    command: "python3 main.py"
+
+version: "3.3"
