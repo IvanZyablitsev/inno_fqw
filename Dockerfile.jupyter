@@ -3,4 +3,6 @@ FROM quay.io/jupyter/scipy-notebook:latest
 USER root
 
 COPY requirements.txt /tmp/requirements.txt
+COPY requirements_jupyter.txt /tmp/requirements_jupyter.txt
+RUN cat /tmp/requirements_jupyter.txt >> /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt

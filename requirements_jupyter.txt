@@ -1,0 +1,6 @@
+kagglehub
+matplotlib==3.9.2
+seaborn==0.13.1
+scipy==1.13.1
+imblearn
+ydata-profiling==4.11.0

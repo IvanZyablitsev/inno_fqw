@@ -3,7 +3,7 @@ services:
   notebook:
     build:
       context: .
-      dockerfile: ./jupyter/Dockerfile
+      dockerfile: ./Dockerfile.jupyter
     environment:
       DOCKER_STACKS_JUPYTER_CMD: notebook
     volumes:
@@ -13,11 +13,14 @@ services:
     command: "start-notebook.sh --ServerApp.root_dir=/home/jovyan/scriping --NotebookApp.token="
 
   gui:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
     ports:
       - 7860:7860
     volumes:
-      - ./app:/usr/src/app:rw
+      - ./app/main.py:/usr/src/app/main.py:rw
+      - ./scraping/model.pkl:/usr/src/app/model.pkl:rw
     command: "python3 main.py"
 
 version: "3.3"
