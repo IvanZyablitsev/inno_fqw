@@ -2,10 +2,6 @@ FROM quay.io/jupyter/scipy-notebook:latest as learning
 
 USER root
 
-ADD BankHlynovSSC2018-CA.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
-ENV CURL_CA_BUNDLE '/etc/ssl/certs/ca-certificates.crt'
-
 COPY requirements.txt /tmp/requirements.txt
 COPY requirements_jupyter.txt /tmp/requirements_jupyter.txt
 RUN pip install -r /tmp/requirements.txt && \
@@ -14,7 +10,6 @@ RUN pip install -r /tmp/requirements.txt && \
 ADD scraping/scraping.ipynb scraping.ipynb
 
 RUN ipython scraping.ipynb
-
 
 
 FROM python:3.10-slim
@@ -29,8 +24,8 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt && \
 
 WORKDIR /usr/src/app
 COPY app/* /usr/src/app/
-COPY --form=learning model.pkl /usr/src/app/model.pkl
-COPY --form=learning report.html /usr/src/app/report.html
+COPY --from=learning model.pkl /usr/src/app/model.pkl
+COPY --from=learning report.html /usr/src/app/report.html
 
 EXPOSE 7860
 ENV GRADIO_SERVER_NAME="0.0.0.0"
