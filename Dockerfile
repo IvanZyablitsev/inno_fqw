@@ -4,9 +4,10 @@ USER root
 
 COPY requirements.txt /tmp/requirements.txt
 COPY requirements_jupyter.txt /tmp/requirements_jupyter.txt
-RUN pip install -r /tmp/requirements.txt && \
-    pip install -r /tmp/requirements_jupyter.txt
+RUN cat /tmp/requirements_jupyter.txt >> /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
 
+WORKDIR /app
 ADD scraping/scraping.ipynb scraping.ipynb
 
 RUN ipython scraping.ipynb
@@ -19,13 +20,13 @@ LABEL org.opencontainers.image.description="Прогностическая мо�
 LABEL org.opencontainers.image.licenses=MIT
 
 COPY requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt && \
-    pip install --no-cache-dir gradio
+RUN echo "gradio" >> /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 WORKDIR /usr/src/app
 COPY app/* /usr/src/app/
-COPY --from=learning model.pkl /usr/src/app/model.pkl
-COPY --from=learning report.html /usr/src/app/report.html
+COPY --from=learning /app/model.pkl /usr/src/app/model.pkl
+COPY --from=learning /app/report.html /usr/src/app/report.html
 
 EXPOSE 7860
 ENV GRADIO_SERVER_NAME="0.0.0.0"

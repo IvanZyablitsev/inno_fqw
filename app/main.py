@@ -11,7 +11,7 @@ features = dict(
     attendance_rate='Посещаемость',
     previous_grades='Успеваемость',
     extracurricular_activities='Участие во внеклассных мероприятиях',
-    parent_education_level='Образования родителей'
+    parent_education_level='Уровень образования родителей'
 )
 
 # загрузка модели
@@ -19,27 +19,16 @@ model_path = 'model.pkl'
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
-# интерфейс приложения
 with gr.Blocks() as demo:
-    # приветсвенное сообщение
-    # gr.HTML(
-    #     """
-    #     <div style="text-align: center;">
-    #         <h2 style="color: green; font-weight: bold; font-style: italic;">Прогнозирование результата обучения</h2>
-    #         <h6>Введите ваши данные и получите результат</h6>
-    #     </div>
-    #     """
-    # )
     with gr.Row():
-        # столбец с параметрами (scale между столбцами устанавливаем 1 к 3)
         with gr.Column(scale=1):
             with gr.Group():
-                gr.Markdown('**Данные**')
+                gr.Markdown('**  Данные**')
                 hoursweek = gr.Number(minimum=0, maximum=1000, step=0.1, value=10.0, label=features['hoursweek'])
-                attendance_rate = gr.Slider(minimum=0, maximum=100, value=85, step=0.1, label=features['attendance_rate'])
+                attendance_rate = gr.Slider(minimum=0, maximum=100, value=80, step=0.1, label=features['attendance_rate'])
                 previous_grades = gr.Slider(minimum=0, maximum=100, value=85, step=0.1, label=features['previous_grades'])
-                parent_education_level = gr.Radio(education_level_to_index.keys(), value='Associate', label=features['parent_education_level'])
                 extracurricular_activities = gr.Checkbox(value=False, label=features['extracurricular_activities'])
+                parent_education_level = gr.Radio(education_level_to_index.keys(), value='Associate', label=features['parent_education_level'])
 
         with gr.Column(scale=3):
             gr.Image('main_page_image.jpg', height=460, show_label=False)
@@ -50,7 +39,7 @@ with gr.Blocks() as demo:
                 row_count=1,
                 column_widths='50%',
                 max_height=100,
-                # type='pandas',
+                type='pandas',
                 )
             textbox = gr.Textbox(label='Результат')
 
