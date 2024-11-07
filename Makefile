@@ -1,6 +1,6 @@
 
 login:
-	docker login ghcr.io -u IvanZyablitsev
+	docker login ghcr.io
 
 build-push:
-	docker buildx build --tag ghcr.io/ivanzyablitsev/inno_fqw/gradio_app:v0.1 --push .
+	docker buildx build --tag ghcr.io/ivanzyablitsev/inno_fqw/student_predictor:v0.1 --push .

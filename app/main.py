@@ -19,34 +19,33 @@ model_path = 'model.pkl'
 with open(model_path, 'rb') as f:
     model = pickle.load(f)
 
+# описание интерфейса приложения
 with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column(scale=1):
             with gr.Group():
-                gr.Markdown('**  Данные**')
-                hoursweek = gr.Number(minimum=0, maximum=1000, step=0.1, value=10.0, label=features['hoursweek'])
-                attendance_rate = gr.Slider(minimum=0, maximum=100, value=80, step=0.1, label=features['attendance_rate'])
-                previous_grades = gr.Slider(minimum=0, maximum=100, value=85, step=0.1, label=features['previous_grades'])
+                gr.Markdown('  **Данные**')
+                hoursweek = gr.Number(minimum=0, maximum=200, step=0.1, value=14.0, label=features['hoursweek'])
+                attendance_rate = gr.Slider(minimum=0, maximum=100, value=65, step=0.1, label=features['attendance_rate'])
+                previous_grades = gr.Slider(minimum=0, maximum=100, value=78, step=0.1, label=features['previous_grades'])
                 extracurricular_activities = gr.Checkbox(value=False, label=features['extracurricular_activities'])
                 parent_education_level = gr.Radio(education_level_to_index.keys(), value='Associate', label=features['parent_education_level'])
 
         with gr.Column(scale=3):
-            gr.Image('main_page_image.jpg', height=460, show_label=False)
+            gr.Image('main_page_image.jpg', height=440, show_label=False)
 
             dataframe = gr.DataFrame(
-                value=pd.DataFrame(columns=features.values()),  # пустой датафрейм с нашими названиями столбцов
+                value=pd.DataFrame(columns=features.values()),
                 label='Ваши данные',
                 row_count=1,
-                column_widths='50%',
+                column_widths='75%',
                 max_height=100,
-                type='pandas',
+                # type='pandas'
                 )
             textbox = gr.Textbox(label='Результат')
 
-    # для удобства входные параметры о пользователе собираем в список
     all_params = [hoursweek, attendance_rate, previous_grades, extracurricular_activities, parent_education_level]
 
-    # функция для предсказания результата - принимает введенные параметры, и выводит результат вместе с датафреймом параметров
     def predict(*params):
         data_df = pd.DataFrame([dict(zip(features.values(), params))])
 
@@ -58,7 +57,6 @@ with gr.Blocks() as demo:
 
         return data_df, text_result
 
-    # назначить прослушиватель событий - функция predict будет вызываться при изменени (change) любого из компонентов
     gr.on(
         triggers=[param.change for param in all_params],
         fn=predict,

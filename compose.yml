@@ -19,8 +19,9 @@ services:
     ports:
       - 7860:7860
     volumes:
-      - ./app/main.py:/usr/src/app/main.py:rw
-      - ./scraping/model.pkl:/usr/src/app/model.pkl:rw
+      - ./app/main.py:/usr/src/app/main.py:ro
+      - ./app/main_page_image.jpg:/usr/src/app/main_page_image.jpg:ro
+      - ./scraping/model.pkl:/usr/src/app/model.pkl:ro
     command: "python3 main.py"
 
 version: "3.3"

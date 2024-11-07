@@ -1,0 +1,19 @@
+services:
+  student_predictor:
+    image: ghcr.io/ivanzyablitsev/inno_fqw/student_predictor:v0.1
+    container_name: student_predictor
+    environment:
+      GRADIO_ROOT_PATH: '/student_predictor'
+    networks:
+      projects:
+        ipv4_address: 192.168.250.36
+
+networks:
+  projects:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.250.0/24
+          gateway: 192.168.250.1
+
+version: "3.8"
