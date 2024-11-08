@@ -1,4 +1,27 @@
 services:
+
+  traefik:
+    image: "traefik:v3.2"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=postmaster@example.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      projects:
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "letsencrypt:/letsencrypt"
+
   student_predictor:
     image: ghcr.io/ivanzyablitsev/inno_fqw/student_predictor:v0.1
     container_name: student_predictor
@@ -6,14 +29,17 @@ services:
       GRADIO_ROOT_PATH: '/student_predictor'
     networks:
       projects:
-        ipv4_address: 192.168.250.36
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`projects.zyablitsev.ru`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
 
 networks:
   projects:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.250.0/24
-          gateway: 192.168.250.1
+
+volumes:
+  letsencrypt:
 
 version: "3.8"

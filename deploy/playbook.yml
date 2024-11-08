@@ -1,1 +1,13 @@
 ---
+- name: deploy
+  docker_container:
+    name: student_predictor
+    image: ghcr.io/ivanzyablitsev/inno_fqw/student_predictor:v0.1
+    env:
+      GRADIO_ROOT_PATH: '/student_predictor'
+    state: started
+    pull: yes
+    restart_policy: unless-stopped
+    log_driver: journald
+    networks:
+      - name: projects
